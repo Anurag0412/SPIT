@@ -37,8 +37,8 @@ function Stock() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <h1 className="text-3xl font-bold text-white mb-2">Stock</h1>
-          <p className="text-gray-400">Manage inventory levels and costs</p>
+          <h1 className="text-4xl font-bold text-gradient mb-3">Stock</h1>
+          <p className="text-gray-300 text-lg">Manage inventory levels and costs</p>
         </motion.div>
 
         <motion.div
@@ -63,13 +63,13 @@ function Stock() {
       >
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-white/5">
+            <thead className="bg-gradient-to-r from-accent/10 via-primary/10 to-secondary/10 border-b border-white/10">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Product</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Per Unit Cost</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">On Hand</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Free to Use</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Actions</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">Product</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">Per Unit Cost</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">On Hand</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">Free to Use</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -79,12 +79,16 @@ function Stock() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
-                  className="border-b border-white/5"
+                  whileHover={{ 
+                    backgroundColor: 'rgba(255, 107, 157, 0.08)',
+                    x: 4,
+                    transition: { duration: 0.2 }
+                  }}
+                  className="border-b border-white/5 group"
                 >
                   <td className="px-6 py-4">
-                    <div className="font-medium text-white">{item.name}</div>
-                    <div className="text-sm text-gray-400">{item.product}</div>
+                    <div className="font-semibold text-white group-hover:text-accent transition-colors">{item.name}</div>
+                    <div className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">{item.product}</div>
                   </td>
                   <td className="px-6 py-4">
                     {editing === item.id ? (
@@ -92,10 +96,10 @@ function Stock() {
                         type="number"
                         value={editValues.cost}
                         onChange={(e) => setEditValues(prev => ({ ...prev, cost: parseFloat(e.target.value) || 0 }))}
-                        className="w-24 px-2 py-1 rounded bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-accent"
+                        className="w-28 px-3 py-1.5 rounded-lg glass border border-accent/50 text-white focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
                       />
                     ) : (
-                      <span className="text-gray-300">{item.cost} Rs</span>
+                      <span className="text-gray-300 group-hover:text-white transition-colors font-medium">{item.cost} Rs</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
@@ -104,10 +108,10 @@ function Stock() {
                         type="number"
                         value={editValues.onHand}
                         onChange={(e) => setEditValues(prev => ({ ...prev, onHand: parseInt(e.target.value) || 0 }))}
-                        className="w-24 px-2 py-1 rounded bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-accent"
+                        className="w-28 px-3 py-1.5 rounded-lg glass border border-accent/50 text-white focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
                       />
                     ) : (
-                      <span className="text-gray-300">{item.onHand}</span>
+                      <span className="text-gray-300 group-hover:text-white transition-colors font-medium">{item.onHand}</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
@@ -116,10 +120,10 @@ function Stock() {
                         type="number"
                         value={editValues.free}
                         onChange={(e) => setEditValues(prev => ({ ...prev, free: parseInt(e.target.value) || 0 }))}
-                        className="w-24 px-2 py-1 rounded bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-accent"
+                        className="w-28 px-3 py-1.5 rounded-lg glass border border-accent/50 text-white focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
                       />
                     ) : (
-                      <span className="text-gray-300">{item.free}</span>
+                      <span className="text-gray-300 group-hover:text-white transition-colors font-medium">{item.free}</span>
                     )}
                   </td>
                   <td className="px-6 py-4">

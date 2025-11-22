@@ -37,17 +37,22 @@ function MoveHistory() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <h1 className="text-3xl font-bold text-white mb-2">Move History</h1>
-          <p className="text-gray-400">Track all inventory movements</p>
+          <h1 className="text-4xl font-bold text-gradient mb-3">Move History</h1>
+          <p className="text-gray-300 text-lg">Track all inventory movements</p>
         </motion.div>
 
         <motion.button
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.05, y: -2 }}
           whileTap={{ scale: 0.95 }}
-          className="px-4 py-2 rounded-lg bg-gradient-to-r from-accent to-accent-dark text-white font-semibold flex items-center space-x-2 shadow-lg"
+          className="px-6 py-3 rounded-xl btn-primary text-white font-bold flex items-center space-x-2 shadow-glow relative overflow-hidden group"
         >
-          <Plus className="w-4 h-4" />
-          <span>NEW</span>
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+            animate={{ x: ['-100%', '200%'] }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
+          />
+          <Plus className="w-5 h-5 relative z-10" />
+          <span className="relative z-10">NEW</span>
         </motion.button>
       </div>
 
@@ -92,15 +97,15 @@ function MoveHistory() {
       >
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-white/5">
+            <thead className="bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 border-b border-white/10">
               <tr>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Reference</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Date</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Contact</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">From</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">To</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Quantity</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Status</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">Reference</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">Date</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">Contact</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">From</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">To</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">Quantity</th>
+                <th className="px-6 py-4 text-left text-sm font-bold text-white">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -110,30 +115,49 @@ function MoveHistory() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  whileHover={{ backgroundColor: move.type === 'in' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)' }}
-                  className={`border-b border-white/5 ${
+                  whileHover={{ 
+                    backgroundColor: move.type === 'in' ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                    x: 4,
+                    transition: { duration: 0.2 }
+                  }}
+                  className={`border-b border-white/5 group ${
                     move.type === 'in' ? 'bg-green-500/5' : 'bg-red-500/5'
                   }`}
                 >
-                  <td className="px-6 py-4 text-white font-medium">{move.reference}</td>
-                  <td className="px-6 py-4 text-gray-300">{move.date}</td>
-                  <td className="px-6 py-4 text-gray-300">{move.contact}</td>
-                  <td className="px-6 py-4 text-gray-300">{move.from}</td>
+                  <td className="px-6 py-4">
+                    <span className="text-white font-semibold group-hover:text-accent transition-colors">
+                      {move.reference}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-300 group-hover:text-white transition-colors">{move.date}</td>
+                  <td className="px-6 py-4 text-gray-300 group-hover:text-white transition-colors">{move.contact}</td>
+                  <td className="px-6 py-4 text-gray-300 group-hover:text-white transition-colors">{move.from}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">
-                      <span className="text-gray-300">{move.to}</span>
-                      <ArrowRight className={`w-4 h-4 ${move.type === 'in' ? 'text-green-400' : 'text-red-400'}`} />
+                      <span className="text-gray-300 group-hover:text-white transition-colors">{move.to}</span>
+                      <motion.div
+                        animate={{ x: [0, 3, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        <ArrowRight className={`w-4 h-4 ${move.type === 'in' ? 'text-green-400' : 'text-red-400'}`} />
+                      </motion.div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`font-medium ${move.type === 'in' ? 'text-green-400' : 'text-red-400'}`}>
+                    <motion.span
+                      whileHover={{ scale: 1.2 }}
+                      className={`font-bold text-lg ${move.type === 'in' ? 'text-green-400' : 'text-red-400'}`}
+                    >
                       {move.type === 'in' ? '+' : '-'}{move.quantity}
-                    </span>
+                    </motion.span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(move.status)}`}>
+                    <motion.span
+                      whileHover={{ scale: 1.15, rotate: 2 }}
+                      className={`status-badge ${getStatusColor(move.status)} shadow-lg`}
+                    >
                       {move.status}
-                    </span>
+                    </motion.span>
                   </td>
                 </motion.tr>
               ))}

@@ -28,31 +28,37 @@ function AppLayout({ children }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative z-10">
       {/* Top Navigation Bar */}
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="glass-strong border-b border-white/10 px-6 py-4"
+        transition={{ duration: 0.5 }}
+        className="glass-strong border-b border-white/20 px-6 py-4 sticky top-0 z-50 backdrop-blur-xl"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-3 group">
             <motion.div
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
-              className="w-10 h-10 rounded-lg bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center"
+              className="w-12 h-12 rounded-xl bg-gradient-accent flex items-center justify-center shadow-glow relative overflow-hidden"
             >
-              <Package className="w-6 h-6 text-white" />
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
+              />
+              <Package className="w-6 h-6 text-white relative z-10" />
             </motion.div>
-            <span className="text-xl font-bold text-white">Inventory Pro</span>
+            <span className="text-xl font-bold text-gradient">Inventory Pro</span>
           </Link>
 
           {/* Menu Items */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-2">
             {menuItems
               .filter(item => !item.hidden)
-              .map((item) => {
+              .map((item, index) => {
                 const Icon = item.icon
                 const isActive = location.pathname === item.path || 
                   (item.path === '/receipts' && (location.pathname.startsWith('/receipts') || location.pathname.startsWith('/deliveries'))) ||
@@ -61,16 +67,28 @@ function AppLayout({ children }) {
                 return (
                   <Link key={item.path} to={item.path}>
                     <motion.div
-                      whileHover={{ scale: 1.05 }}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
-                      className={`px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors ${
+                      className={`px-5 py-2.5 rounded-xl flex items-center space-x-2 transition-all relative overflow-hidden ${
                         isActive
-                          ? 'bg-accent text-white'
-                          : 'text-gray-300 hover:text-white hover:bg-white/5'
+                          ? 'bg-gradient-accent text-white shadow-glow'
+                          : 'text-gray-300 hover:text-white glass-hover'
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
-                      <span className="text-sm font-medium">{item.label}</span>
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeTab"
+                          className="absolute inset-0 bg-gradient-accent rounded-xl"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                      <Icon className={`w-4 h-4 relative z-10 ${isActive ? 'text-white' : ''}`} />
+                      <span className={`text-sm font-semibold relative z-10 ${isActive ? 'text-white' : ''}`}>
+                        {item.label}
+                      </span>
                     </motion.div>
                   </Link>
                 )
@@ -83,43 +101,53 @@ function AppLayout({ children }) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-              className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors"
+              className="flex items-center space-x-2 px-3 py-2 rounded-xl glass-hover transition-all group"
             >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center">
-                <User className="w-4 h-4 text-white" />
+              <div className="w-10 h-10 rounded-full bg-gradient-accent flex items-center justify-center shadow-glow relative overflow-hidden">
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                  animate={{ x: ['-100%', '200%'] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                />
+                <User className="w-5 h-5 text-white relative z-10" />
               </div>
-              <ChevronDown className={`w-4 h-4 text-gray-300 transition-transform ${userDropdownOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-gray-300 transition-transform duration-300 ${userDropdownOpen ? 'rotate-180' : ''}`} />
             </motion.button>
 
             <AnimatePresence>
               {userDropdownOpen && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 mt-2 w-48 glass-strong rounded-lg shadow-xl border border-white/10 overflow-hidden z-50"
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute right-0 mt-2 w-56 glass-strong rounded-2xl shadow-2xl border border-white/20 overflow-hidden z-50"
                 >
                   <div className="py-2">
-                    <div className="px-4 py-2 border-b border-white/10">
-                      <p className="text-sm font-medium text-white">{user?.name}</p>
-                      <p className="text-xs text-gray-400">{user?.email}</p>
+                    <div className="px-4 py-3 border-b border-white/10 bg-gradient-to-r from-accent/10 to-primary/10">
+                      <p className="text-sm font-semibold text-white">{user?.name}</p>
+                      <p className="text-xs text-gray-300 mt-0.5">{user?.email}</p>
                     </div>
-                    <button
+                    <motion.button
+                      whileHover={{ x: 5 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => {
                         setUserDropdownOpen(false)
-                        // Navigate to profile (not implemented)
                       }}
-                      className="w-full px-4 py-2 text-left text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                      className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors flex items-center space-x-2"
                     >
-                      My Profile
-                    </button>
-                    <button
+                      <User className="w-4 h-4" />
+                      <span>My Profile</span>
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ x: 5 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={handleLogout}
-                      className="w-full px-4 py-2 text-left text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors flex items-center space-x-2"
+                      className="w-full px-4 py-3 text-left text-sm text-danger hover:bg-danger/10 hover:text-danger transition-colors flex items-center space-x-2"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Logout</span>
-                    </button>
+                    </motion.button>
                   </div>
                 </motion.div>
               )}
@@ -132,8 +160,8 @@ function AppLayout({ children }) {
       <motion.main
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.1 }}
-        className="flex-1 p-6"
+        transition={{ delay: 0.1, duration: 0.5 }}
+        className="flex-1 p-6 md:p-8"
       >
         <div className="max-w-7xl mx-auto">
           {children}

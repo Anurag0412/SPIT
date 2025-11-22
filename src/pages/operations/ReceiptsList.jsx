@@ -21,10 +21,10 @@ function ReceiptsList() {
   const getStatusColor = (status) => {
     const colors = {
       Draft: 'bg-gray-500/20 text-gray-300 border-gray-500/50',
-      Ready: 'bg-blue-500/20 text-blue-300 border-blue-500/50',
-      Waiting: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50',
-      Done: 'bg-green-500/20 text-green-300 border-green-500/50',
-      Canceled: 'bg-red-500/20 text-red-300 border-red-500/50'
+      Ready: 'bg-primary/20 text-primary-light border-primary/50',
+      Waiting: 'bg-warning/20 text-warning-light border-warning/50',
+      Done: 'bg-success/20 text-success-light border-success/50',
+      Canceled: 'bg-danger/20 text-danger-light border-danger/50'
     }
     return colors[status] || colors.Draft
   }
@@ -44,8 +44,8 @@ function ReceiptsList() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <h1 className="text-3xl font-bold text-white mb-2">Receipts</h1>
-          <p className="text-gray-400">Manage incoming inventory</p>
+          <h1 className="text-4xl font-bold text-gradient mb-3">Receipts</h1>
+          <p className="text-gray-300 text-lg">Manage incoming inventory</p>
         </motion.div>
 
         <div className="flex items-center space-x-3">
@@ -78,33 +78,46 @@ function ReceiptsList() {
             <Search className="w-5 h-5 text-gray-300" />
           </motion.button>
 
-          <div className="flex items-center glass rounded-lg p-1">
+          <div className="flex items-center glass rounded-xl p-1.5">
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => setViewMode('table')}
-              className={`p-2 rounded ${viewMode === 'table' ? 'bg-accent text-white' : 'text-gray-300'}`}
+              className={`p-2.5 rounded-lg transition-all ${
+                viewMode === 'table' 
+                  ? 'bg-gradient-accent text-white shadow-glow' 
+                  : 'text-gray-300 hover:text-white hover:bg-white/5'
+              }`}
             >
               <Table className="w-4 h-4" />
             </motion.button>
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => setViewMode('kanban')}
-              className={`p-2 rounded ${viewMode === 'kanban' ? 'bg-accent text-white' : 'text-gray-300'}`}
+              className={`p-2.5 rounded-lg transition-all ${
+                viewMode === 'kanban' 
+                  ? 'bg-gradient-accent text-white shadow-glow' 
+                  : 'text-gray-300 hover:text-white hover:bg-white/5'
+              }`}
             >
               <LayoutGrid className="w-4 h-4" />
             </motion.button>
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate('/receipts/new')}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-accent to-accent-dark text-white font-semibold flex items-center space-x-2 shadow-lg"
+            className="px-6 py-3 rounded-xl btn-primary text-white font-bold flex items-center space-x-2 shadow-glow relative overflow-hidden group"
           >
-            <Plus className="w-4 h-4" />
-            <span>NEW</span>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
+            />
+            <Plus className="w-5 h-5 relative z-10" />
+            <span className="relative z-10">NEW</span>
           </motion.button>
         </div>
       </div>
@@ -120,14 +133,14 @@ function ReceiptsList() {
           >
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-white/5">
+                <thead className="bg-gradient-to-r from-accent/10 via-primary/10 to-secondary/10 border-b border-white/10">
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Reference</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">From</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">To</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Contact</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Schedule Date</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Status</th>
+                    <th className="px-6 py-4 text-left text-sm font-bold text-white">Reference</th>
+                    <th className="px-6 py-4 text-left text-sm font-bold text-white">From</th>
+                    <th className="px-6 py-4 text-left text-sm font-bold text-white">To</th>
+                    <th className="px-6 py-4 text-left text-sm font-bold text-white">Contact</th>
+                    <th className="px-6 py-4 text-left text-sm font-bold text-white">Schedule Date</th>
+                    <th className="px-6 py-4 text-left text-sm font-bold text-white">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -137,19 +150,30 @@ function ReceiptsList() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
+                      whileHover={{ 
+                        backgroundColor: 'rgba(255, 107, 157, 0.08)',
+                        x: 4,
+                        transition: { duration: 0.2 }
+                      }}
                       onClick={() => navigate(`/receipts/${receipt.id}`)}
-                      className="border-b border-white/5 cursor-pointer transition-colors"
+                      className="border-b border-white/5 cursor-pointer transition-all group relative"
                     >
-                      <td className="px-6 py-4 text-white font-medium">{receipt.reference}</td>
-                      <td className="px-6 py-4 text-gray-300">{receipt.from}</td>
-                      <td className="px-6 py-4 text-gray-300">{receipt.to}</td>
-                      <td className="px-6 py-4 text-gray-300">{receipt.contact}</td>
-                      <td className="px-6 py-4 text-gray-300">{receipt.scheduleDate}</td>
                       <td className="px-6 py-4">
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(receipt.status)}`}>
-                          {receipt.status}
+                        <span className="text-white font-semibold group-hover:text-accent transition-colors">
+                          {receipt.reference}
                         </span>
+                      </td>
+                      <td className="px-6 py-4 text-gray-300 group-hover:text-white transition-colors">{receipt.from}</td>
+                      <td className="px-6 py-4 text-gray-300 group-hover:text-white transition-colors">{receipt.to}</td>
+                      <td className="px-6 py-4 text-gray-300 group-hover:text-white transition-colors">{receipt.contact}</td>
+                      <td className="px-6 py-4 text-gray-300 group-hover:text-white transition-colors">{receipt.scheduleDate}</td>
+                      <td className="px-6 py-4">
+                        <motion.span
+                          whileHover={{ scale: 1.15, rotate: 2 }}
+                          className={`status-badge ${getStatusColor(receipt.status)} shadow-lg`}
+                        >
+                          {receipt.status}
+                        </motion.span>
                       </td>
                     </motion.tr>
                   ))}

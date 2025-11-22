@@ -31,96 +31,140 @@ function Dashboard() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 relative z-10">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-        <p className="text-gray-400">Overview of your inventory operations</p>
+        <h1 className="text-4xl font-bold text-gradient mb-3">Dashboard</h1>
+        <p className="text-gray-300 text-lg">Overview of your inventory operations</p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Receipt Card */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          whileHover={{ scale: 1.02, y: -5 }}
+          initial={{ opacity: 0, x: -30, scale: 0.95 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          whileHover={{ scale: 1.03, y: -8, rotateY: 2 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/receipts')}
-          className="glass-strong rounded-2xl p-6 cursor-pointer transition-all hover:shadow-2xl"
+          className="glass-strong rounded-3xl p-8 cursor-pointer card-glow relative overflow-hidden group"
         >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-white">Receipt</h2>
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-accent/20 to-accent-dark/20 flex items-center justify-center">
-              <Package className="w-6 h-6 text-accent" />
+          {/* Animated background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-white">Receipt</h2>
+              <motion.div
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/30 via-accent/20 to-primary/30 flex items-center justify-center shadow-glow"
+              >
+                <Package className="w-8 h-8 text-accent" />
+              </motion.div>
             </div>
-          </div>
 
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="inline-block mb-4"
-          >
-            <div className="px-4 py-2 rounded-full bg-gradient-to-r from-accent to-accent-dark text-white font-semibold text-sm">
-              {receiptStats.toReceive} to receive
-            </div>
-          </motion.div>
-
-          <div className="space-y-2 text-sm">
-            {receiptStats.late > 0 && (
-              <div className="flex items-center space-x-2 text-red-400">
-                <AlertCircle className="w-4 h-4" />
-                <span>{receiptStats.late} Late</span>
+            <motion.div
+              whileHover={{ scale: 1.08, x: 5 }}
+              className="inline-block mb-6"
+            >
+              <div className="px-6 py-3 rounded-full bg-gradient-accent text-white font-bold text-base shadow-glow relative overflow-hidden">
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  animate={{ x: ['-100%', '200%'] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+                />
+                <span className="relative z-10">{receiptStats.toReceive} to receive</span>
               </div>
-            )}
-            <div className="flex items-center space-x-2 text-gray-400">
-              <Clock className="w-4 h-4" />
-              <span>{receiptStats.operations} operations</span>
+            </motion.div>
+
+            <div className="space-y-3 text-sm">
+              {receiptStats.late > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="flex items-center space-x-3 px-4 py-2 rounded-lg bg-danger/10 border border-danger/30"
+                >
+                  <AlertCircle className="w-5 h-5 text-danger animate-pulse" />
+                  <span className="text-danger font-semibold">{receiptStats.late} Late</span>
+                </motion.div>
+              )}
+              <div className="flex items-center space-x-3 text-gray-300">
+                <Clock className="w-5 h-5 text-primary" />
+                <span className="font-medium">{receiptStats.operations} operations</span>
+              </div>
             </div>
           </div>
         </motion.div>
 
         {/* Delivery Card */}
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          whileHover={{ scale: 1.02, y: -5 }}
+          initial={{ opacity: 0, x: 30, scale: 0.95 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          whileHover={{ scale: 1.03, y: -8, rotateY: -2 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/deliveries')}
-          className="glass-strong rounded-2xl p-6 cursor-pointer transition-all hover:shadow-2xl"
+          className="glass-strong rounded-3xl p-8 cursor-pointer card-glow relative overflow-hidden group"
         >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-white">Delivery</h2>
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-accent/20 to-accent-dark/20 flex items-center justify-center">
-              <Package className="w-6 h-6 text-accent" />
+          {/* Animated background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-white">Delivery</h2>
+              <motion.div
+                animate={{ rotate: [0, -10, 10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                className="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary/30 via-secondary/20 to-accent/30 flex items-center justify-center shadow-glow-primary"
+              >
+                <Package className="w-8 h-8 text-secondary" />
+              </motion.div>
             </div>
-          </div>
 
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="inline-block mb-4"
-          >
-            <div className="px-4 py-2 rounded-full bg-gradient-to-r from-accent to-accent-dark text-white font-semibold text-sm">
-              {deliveryStats.toDeliver} to Deliver
-            </div>
-          </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.08, x: 5 }}
+              className="inline-block mb-6"
+            >
+              <div className="px-6 py-3 rounded-full bg-gradient-to-r from-secondary via-primary to-accent text-white font-bold text-base shadow-glow-primary relative overflow-hidden">
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  animate={{ x: ['-100%', '200%'] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 1.5 }}
+                />
+                <span className="relative z-10">{deliveryStats.toDeliver} to Deliver</span>
+              </div>
+            </motion.div>
 
-          <div className="space-y-2 text-sm">
-            {deliveryStats.late > 0 && (
-              <div className="flex items-center space-x-2 text-red-400">
-                <AlertCircle className="w-4 h-4" />
-                <span>{deliveryStats.late} Late</span>
+            <div className="space-y-3 text-sm">
+              {deliveryStats.late > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="flex items-center space-x-3 px-4 py-2 rounded-lg bg-danger/10 border border-danger/30"
+                >
+                  <AlertCircle className="w-5 h-5 text-danger animate-pulse" />
+                  <span className="text-danger font-semibold">{deliveryStats.late} Late</span>
+                </motion.div>
+              )}
+              {deliveryStats.waiting > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="flex items-center space-x-3 px-4 py-2 rounded-lg bg-warning/10 border border-warning/30"
+                >
+                  <Clock className="w-5 h-5 text-warning" />
+                  <span className="text-warning font-semibold">{deliveryStats.waiting} waiting</span>
+                </motion.div>
+              )}
+              <div className="flex items-center space-x-3 text-gray-300">
+                <Clock className="w-5 h-5 text-primary" />
+                <span className="font-medium">{deliveryStats.operations} operations</span>
               </div>
-            )}
-            {deliveryStats.waiting > 0 && (
-              <div className="flex items-center space-x-2 text-yellow-400">
-                <Clock className="w-4 h-4" />
-                <span>{deliveryStats.waiting} waiting</span>
-              </div>
-            )}
-            <div className="flex items-center space-x-2 text-gray-400">
-              <Clock className="w-4 h-4" />
-              <span>{deliveryStats.operations} operations</span>
             </div>
           </div>
         </motion.div>

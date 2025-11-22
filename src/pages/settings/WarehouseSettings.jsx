@@ -102,13 +102,18 @@ function WarehouseSettings() {
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               type="submit"
-              className="w-full py-3 rounded-lg bg-gradient-to-r from-accent to-accent-dark text-white font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center space-x-2"
+              className="w-full py-4 rounded-xl btn-primary text-white font-bold shadow-glow flex items-center justify-center space-x-2 relative overflow-hidden group"
             >
-              <Save className="w-4 h-4" />
-              <span>Save Warehouse</span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
+              />
+              <Save className="w-5 h-5 relative z-10" />
+              <span className="relative z-10">Save Warehouse</span>
             </motion.button>
           </form>
         </motion.div>
