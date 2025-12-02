@@ -1,4 +1,4 @@
-# Inventory Management System
+# Invegintory Management System
 
 A modern, visually stunning Inventory Management System web application with advanced UI and smooth animations.
 
